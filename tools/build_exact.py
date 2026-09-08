@@ -79,6 +79,33 @@ def inject_my_js_and_css(soup):
         soup.body.append(script)
 
 
+
+IMG_ID_PAT = re.compile(
+    r'''(?:https?:)?\\?/\\?/custom-images\.strikinglycdn\.com(?:\\?/[^"'\s\\]*?)*?\\?/(\d+_\d+)\.(?:jpe?g|png)''',
+    re.I,
+)
+# The one image that failed to download during the original mirror capture —
+# substitute a different real photo from the same category (oriental zaffah).
+IMG_ID_FALLBACK = {"542674_664897": "676820_523291"}
+
+def localize_images(html):
+    img_dir = os.path.join(ROOT, "assets", "img")
+    available = os.listdir(img_dir)
+    id_to_file = {}
+    for fn in available:
+        m = re.match(r"(\d+_\d+)\.", fn)
+        if m:
+            id_to_file[m.group(1)] = fn
+
+    def repl(m):
+        iid = m.group(1)
+        iid = IMG_ID_FALLBACK.get(iid, iid)
+        if iid in id_to_file:
+            return f"{BASE}/assets/img/{id_to_file[iid]}"
+        return m.group(0)
+
+    return IMG_ID_PAT.sub(repl, html)
+
 def replace_form(soup, kind, key):
     if kind == "email":
         node = soup.select_one(".s-component.s-form.s-email-form") or soup.select_one(".s-email-form")
@@ -117,10 +144,12 @@ def process(mirror_name, out_name, form_kind, form_key):
     if form_kind:
         replace_form(soup, form_kind, form_key)
 
+    out_html = localize_images(str(soup))
+
     out_path = os.path.join(ROOT, out_name)
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
-        f.write(str(soup))
+        f.write(out_html)
     print("wrote", out_name)
 
 
