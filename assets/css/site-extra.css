@@ -1,0 +1,86 @@
+/* Styles for the injected booking/contact forms only. Scoped under
+   .pf-scope so nothing here can collide with the original Strikingly
+   theme CSS loaded on the same page. */
+
+.pf-scope {
+  font-family: 'Source Sans Pro', system-ui, sans-serif;
+  color: #1c1c1c;
+}
+.pf-scope .booking-form {
+  background: #fff;
+  border: 1px solid #e8e2e1;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 6px 24px rgba(0,0,0,.06);
+}
+.pf-scope .hidden-field { position: absolute; left: -9999px; }
+.pf-scope .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.pf-scope .field {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  font-weight: 600;
+  font-size: .9rem;
+  font-family: 'Montserrat', system-ui, sans-serif;
+}
+.pf-scope .field-wide { grid-column: 1 / -1; }
+.pf-scope .field input[type=text],
+.pf-scope .field input[type=email],
+.pf-scope .field input[type=tel],
+.pf-scope .field input[type=date],
+.pf-scope .field select,
+.pf-scope .field textarea,
+.pf-scope .field input[type=file] {
+  font-family: 'Source Sans Pro', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: .65em .8em;
+  border: 1px solid #e8e2e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #1c1c1c;
+  width: 100%;
+  box-sizing: border-box;
+}
+.pf-scope fieldset.field { border: none; padding: 0; margin: 0; }
+.pf-scope fieldset.field legend {
+  padding: 0 0 .4rem;
+  font-weight: 600;
+  font-size: .9rem;
+  font-family: 'Montserrat', system-ui, sans-serif;
+}
+.pf-scope .choice-group { display: flex; flex-wrap: wrap; gap: .5rem .9rem; }
+.pf-scope .choice {
+  font-weight: 400;
+  font-size: .92rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: 'Source Sans Pro', system-ui, sans-serif;
+}
+.pf-scope .form-note { color: #50555c; font-size: .85rem; margin-top: 1rem; }
+.pf-scope .form-note a { color: #eb2b1a; }
+.pf-scope .btn {
+  display: inline-block;
+  padding: .8em 1.6em;
+  border-radius: 999px;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #eb2b1a;
+  color: #fff;
+  text-decoration: none;
+}
+.pf-scope .btn:hover { background: #c9210f; }
+.pf-scope .btn-lg { padding: 1em 2.2em; font-size: 1.05rem; }
+
+@media (max-width: 700px) {
+  .pf-scope .form-grid { grid-template-columns: 1fr; }
+}

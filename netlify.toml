@@ -6,84 +6,8 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Preserve links from the old Strikingly site
+# The old Strikingly site also served "/home" for the homepage.
 [[redirects]]
   from = "/home"
   to = "/"
-  status = 301
-[[redirects]]
-  from = "/pages/cookie-policy"
-  to = "/cookie-policy"
-  status = 301
-[[redirects]]
-  from = "/proposal"
-  to = "/events/proposal"
-  status = 301
-[[redirects]]
-  from = "/engagement"
-  to = "/events/engagement"
-  status = 301
-[[redirects]]
-  from = "/bachelor"
-  to = "/events/bachelor"
-  status = 301
-[[redirects]]
-  from = "/your-big-day"
-  to = "/events/your-big-day"
-  status = 301
-[[redirects]]
-  from = "/holy-first-communion"
-  to = "/events/holy-first-communion"
-  status = 301
-[[redirects]]
-  from = "/baptism"
-  to = "/events/baptism"
-  status = 301
-[[redirects]]
-  from = "/gender-reveal"
-  to = "/events/gender-reveal"
-  status = 301
-[[redirects]]
-  from = "/birthday-1"
-  to = "/events/birthday"
-  status = 301
-[[redirects]]
-  from = "/christmas"
-  to = "/events/christmas"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/oriental-zaffah"
-  to = "/portfolio/oriental-zaffah"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/orientalzaffah"
-  to = "/portfolio/oriental-zaffah"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/circus-show"
-  to = "/portfolio/circus-show"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/inflatable-games"
-  to = "/portfolio/inflatable-games"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/table-decoration-set-up"
-  to = "/portfolio/table-decoration-set-up"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/catering-services"
-  to = "/portfolio/catering-services"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/characters-mascots"
-  to = "/portfolio/characters-mascots"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/photo-booth-entertainment"
-  to = "/portfolio/photo-booth-entertainment"
-  status = 301
-[[redirects]]
-  from = "/portfolio/items/christmas-mascots"
-  to = "/portfolio/christmas-mascots"
   status = 301
