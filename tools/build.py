@@ -9,6 +9,10 @@ under assets/), so it's safe to re-run after editing the DATA below.
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Optional path prefix for hosting under a subfolder (e.g. GitHub Pages project
+# sites at github.io/<repo>/). Leave unset (empty) for a domain-root deploy
+# like Netlify/Vercel/the real paradreamlb.com.
+BASE = os.environ.get("PARADREAM_BASE", "").rstrip("/")
 
 SITE_NAME = "Paradream Events"
 TAGLINE = "YOU DREAM, WE ACHIEVE"
@@ -88,7 +92,7 @@ OCCASIONS = [
 # ---------------------------------------------------------------------------
 
 def img(id_ext, alt="", cls="", loading="lazy"):
-    return f'<img src="/assets/img/{id_ext}" alt="{alt}" class="{cls}" loading="{loading}">'
+    return f'<img src="{BASE}/assets/img/{id_ext}" alt="{alt}" class="{cls}" loading="{loading}">'
 
 def find_img(iid):
     for ext in ("jpg", "jpeg", "png"):
@@ -98,10 +102,10 @@ def find_img(iid):
 
 def page(title, description, body, canonical="/", extra_head=""):
     nav_items = "".join(
-        f'<li><a href="{href}">{label}</a></li>' for href, label in NAV_LINKS
+        f'<li><a href="{BASE}{href}">{label}</a></li>' for href, label in NAV_LINKS
     )
     events_items = "".join(
-        f'<li><a href="/events/{slug}.html">{label}</a></li>' for slug, label in EVENTS
+        f'<li><a href="{BASE}/events/{slug}.html">{label}</a></li>' for slug, label in EVENTS
     )
     return f"""<!doctype html>
 <html lang="en">
@@ -111,23 +115,23 @@ def page(title, description, body, canonical="/", extra_head=""):
 <title>{title}</title>
 <meta name="description" content="{description}">
 <link rel="canonical" href="https://www.paradreamlb.com{canonical}">
-<link rel="icon" href="/assets/img/{find_img('642152_189371')}">
+<link rel="icon" href="{BASE}/assets/img/{find_img('642152_189371')}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
-<meta property="og:image" content="/assets/img/{find_img('376585_257154')}">
+<meta property="og:image" content="{BASE}/assets/img/{find_img('376585_257154')}">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="{BASE}/assets/css/style.css">
 {extra_head}
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="/">
-      <img src="/assets/img/{find_img('43580_800970')}" alt="{SITE_NAME}" class="brand-logo">
+    <a class="brand" href="{BASE}/">
+      <img src="{BASE}/assets/img/{find_img('43580_800970')}" alt="{SITE_NAME}" class="brand-logo">
       <span class="brand-name">{SITE_NAME}</span>
     </a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
@@ -137,11 +141,11 @@ def page(title, description, body, canonical="/", extra_head=""):
       <ul class="nav-primary">
         {nav_items}
         <li class="has-dropdown">
-          <a href="/our-services.html">Book an Event <span class="caret">&#9662;</span></a>
+          <a href="{BASE}/our-services.html">Book an Event <span class="caret">&#9662;</span></a>
           <ul class="dropdown">{events_items}</ul>
         </li>
       </ul>
-      <a class="btn btn-primary nav-cta" href="/contact-us.html">Book Now</a>
+      <a class="btn btn-primary nav-cta" href="{BASE}/contact-us.html">Book Now</a>
     </nav>
   </div>
 </header>
@@ -166,33 +170,33 @@ def page(title, description, body, canonical="/", extra_head=""):
     <div class="footer-col">
       <h4>Events</h4>
       <ul>
-        {"".join(f'<li><a href="/events/{slug}.html">{label}</a></li>' for slug, label in EVENTS)}
+        {"".join(f'<li><a href="{BASE}/events/{slug}.html">{label}</a></li>' for slug, label in EVENTS)}
       </ul>
     </div>
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/why-paradream.html">Why Paradream?</a></li>
-        <li><a href="/our-services.html">Our Services</a></li>
-        <li><a href="/gallery.html">Gallery</a></li>
-        <li><a href="/contact-us.html">Contact Us</a></li>
-        <li><a href="/join-us.html">Join Our Team</a></li>
+        <li><a href="{BASE}/">Home</a></li>
+        <li><a href="{BASE}/why-paradream.html">Why Paradream?</a></li>
+        <li><a href="{BASE}/our-services.html">Our Services</a></li>
+        <li><a href="{BASE}/gallery.html">Gallery</a></li>
+        <li><a href="{BASE}/contact-us.html">Contact Us</a></li>
+        <li><a href="{BASE}/join-us.html">Join Our Team</a></li>
       </ul>
     </div>
   </div>
   <div class="wrap footer-bottom">
     <p>&copy; {2026} {SITE_NAME}. All rights reserved.</p>
-    <a href="/cookie-policy.html">Cookie Policy</a>
+    <a href="{BASE}/cookie-policy.html">Cookie Policy</a>
   </div>
 </footer>
 
 <div class="cookie-banner" id="cookie-banner" hidden>
-  <p>We use cookies to ensure a smooth browsing experience. By continuing we assume you accept the use of cookies. <a href="/cookie-policy.html">Learn More</a></p>
+  <p>We use cookies to ensure a smooth browsing experience. By continuing we assume you accept the use of cookies. <a href="{BASE}/cookie-policy.html">Learn More</a></p>
   <button class="btn btn-primary btn-sm" id="cookie-accept">Accept</button>
 </div>
 
-<script src="/assets/js/main.js"></script>
+<script src="{BASE}/assets/js/main.js"></script>
 </body>
 </html>
 """
@@ -394,7 +398,7 @@ def hero(kicker, title, subtitle="", cta=None, bg_id="314845_494302"):
 
 def gallery_grid(ids, cols="grid-4"):
     tiles = "".join(
-        f'<a class="gallery-tile" href="/assets/img/{find_img(i)}" data-lightbox>{img(find_img(i), "Paradream Events", "gallery-img")}</a>'
+        f'<a class="gallery-tile" href="{BASE}/assets/img/{find_img(i)}" data-lightbox>{img(find_img(i), "Paradream Events", "gallery-img")}</a>'
         for i in ids
     )
     return f'<div class="gallery-grid {cols}">{tiles}</div>'
@@ -406,7 +410,7 @@ def build_home():
     body = hero(
         TAGLINE, "Book Your Dream Event Now!",
         "Your Dream Event Is One Click Away!",
-        cta=("Book Now!", "/contact-us.html"),
+        cta=("Book Now!", f"{BASE}/contact-us.html"),
         bg_id="314845_494302",
     )
     body += f"""
@@ -415,7 +419,7 @@ def build_home():
     <div>
       <h2>Discover Our Services</h2>
       <p>Dive into Paradream's portfolio to know what your event will look like.</p>
-      <a class="btn btn-outline" href="/our-services.html">Our Services</a>
+      <a class="btn btn-outline" href="{BASE}/our-services.html">Our Services</a>
     </div>
     <div>{img(find_img('298930_747690'), 'Paradream event setup', 'rounded-img')}</div>
   </div>
@@ -426,7 +430,7 @@ def build_home():
     <div>
       <h2>Join the Paradream Family</h2>
       <p>Be a part of the magic. Join the Paradream family and bring unforgettable moments to life.</p>
-      <a class="btn btn-primary" href="/join-us.html">Join Now</a>
+      <a class="btn btn-primary" href="{BASE}/join-us.html">Join Now</a>
     </div>
     <div>{img(find_img('197854_416907'), 'Paradream team', 'rounded-img')}</div>
   </div>
@@ -506,7 +510,7 @@ def build_why_paradream():
         body += f"""      <div class="occasion-card">
         <h3>{label}</h3>
         <p>{desc}</p>
-        <a class="btn btn-primary btn-sm" href="/events/{slug}.html">Book Now</a>
+        <a class="btn btn-primary btn-sm" href="{BASE}/events/{slug}.html">Book Now</a>
       </div>
 """
     body += """    </div>
@@ -524,7 +528,7 @@ def build_our_services():
     body = hero("What We Offer", "Our Services", bg_id="197854_416907")
     body += '<section class="section"><div class="wrap"><div class="service-grid">'
     for slug, label, iid in PORTFOLIO:
-        body += f"""<a class="service-card" href="/portfolio/{slug}.html">
+        body += f"""<a class="service-card" href="{BASE}/portfolio/{slug}.html">
       {img(find_img(iid), label, "service-img")}
       <h3>{label}</h3>
     </a>"""
@@ -539,7 +543,7 @@ def build_our_services():
 def build_gallery():
     body = hero("Take A Look", "Gallery", bg_id="298930_747690")
     body += f'<section class="section"><div class="wrap">{gallery_grid(GALLERY_IMAGES)}</div></section>'
-    body += '<script src="/assets/js/lightbox.js"></script>'
+    body += f'<script src="{BASE}/assets/js/lightbox.js"></script>'
     write("gallery.html", page(
         "Gallery - Paradream Events",
         "Browse photos from Paradream's events across Lebanon — weddings, zaffahs, birthdays, baptisms, and more.",
@@ -635,8 +639,8 @@ def build_portfolio():
         ids = PORTFOLIO_IMAGES[slug]
         body = hero(TAGLINE, label, bg_id=ids[0])
         body += f'<section class="section"><div class="wrap">{gallery_grid(ids)}</div></section>'
-        body += '<section class="section section-alt"><div class="wrap narrow center"><h2>Ready to bring this to your event?</h2><a class="btn btn-primary btn-lg" href="/contact-us.html">Book Now</a></div></section>'
-        body += '<script src="/assets/js/lightbox.js"></script>'
+        body += f'<section class="section section-alt"><div class="wrap narrow center"><h2>Ready to bring this to your event?</h2><a class="btn btn-primary btn-lg" href="{BASE}/contact-us.html">Book Now</a></div></section>'
+        body += f'<script src="{BASE}/assets/js/lightbox.js"></script>'
         write(f"portfolio/{slug}.html", page(
             f"{label} - Paradream Events",
             f"Our highly skilled and professional team is fully equipped to transform your dream occasion into an extraordinary reality with {label}.",
