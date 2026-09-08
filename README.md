@@ -1,50 +1,66 @@
 # Paradream Events — Website
 
-Migration of [paradreamlb.com](https://www.paradreamlb.com) off Strikingly to a
-self-hosted static site, deployed on Netlify/Vercel.
+A self-hosted rebuild of [paradreamlb.com](https://www.paradreamlb.com), migrated off
+Strikingly. Plain static HTML/CSS/JS — no build step, no server, no framework — so it
+can be hosted anywhere for free (Netlify, Vercel, GitHub Pages, Cloudflare Pages, S3, ...).
 
-## Status
+## What's here
 
-Waiting on a mirrored copy of the live site's content/assets (see below) before
-the actual site code lands here.
+- Real content pulled from the live Strikingly site (page text, testimonials, FAQ,
+  event booking-form fields, and 200+ photos) and rebuilt as a clean, fast, mobile-friendly
+  static site.
+- `tools/build.py` — the generator. All page content lives in this one file as plain
+  Python data (nav links, testimonials, event form fields, image lists, etc). Edit the
+  data at the top, then regenerate:
 
-## How to get me the mirrored site
+  ```bash
+  python3 tools/build.py
+  ```
 
-Strikingly doesn't offer a native "export my code" button, so the plan is to
-mirror the live, published site from your own machine (this sandbox's network
-access is locked down and can't reach paradreamlb.com directly).
+  This overwrites every `.html` file in the repo (not `assets/`) from the data in the
+  script, so it's safe to re-run any time content changes.
+- `assets/img/` — photos carried over from the old site.
+- `assets/css/style.css`, `assets/js/main.js`, `assets/js/lightbox.js` — shared styling
+  and behavior (mobile nav, cookie banner, gallery lightbox).
+- Booking forms (`/events/*.html`, `/join-us.html`, `/contact-us.html`) are wired up as
+  **Netlify Forms** (`data-netlify="true"`) — submissions land in the Netlify dashboard
+  and can be forwarded to email with zero backend code. If you deploy elsewhere, swap
+  the form `action`/attributes for that host's form-handling equivalent (e.g. Formspree).
 
-1. Install `wget` if you don't have it (macOS: `brew install wget`, most Linux
-   distros already have it, Windows: use WSL or a `wget` build).
-2. Run a full mirror of the live site:
+## Preview locally
 
-   ```bash
-   wget --mirror \
-        --convert-links \
-        --adjust-extension \
-        --page-requisites \
-        --no-parent \
-        -P paradream-mirror \
-        https://www.paradreamlb.com
-   ```
+```bash
+python3 -m http.server 8000
+```
 
-   This walks every linked page (home, `/join-us`, `/bachelor`, `/baptism`,
-   etc.), rewrites links to work locally, and pulls down images/CSS/JS into
-   `paradream-mirror/`.
+then open `http://localhost:8000`.
 
-3. Zip the result: `zip -r paradream-mirror.zip paradream-mirror`
-4. Hand it off one of two ways:
-   - Attach/drop the zip in the chat with Claude, and mention its path — Claude
-     will unzip it into this repo and clean it up into a real static site.
-   - Or push the raw mirrored files yourself to this repo's
-     `claude/paradream-migration-rady2m` branch under a `mirror/` folder, and
-     tell Claude it's there.
+## Deploying (Netlify)
 
-## Plan once content is in hand
+1. Push this repo to GitHub (already done if you're reading this on the deployed branch).
+2. On [netlify.com](https://netlify.com), "Add new site" → "Import an existing project" →
+   pick this repo. Build command: none. Publish directory: `.` (repo root). Netlify
+   auto-detects `netlify.toml` in this repo, which also sets cache headers and 301
+   redirects from the old Strikingly URLs (`/bachelor`, `/pages/cookie-policy`, etc.) to
+   their new paths, so old links/SEO keep working.
+3. Once the site is live on its `*.netlify.app` URL, add the custom domain
+   (`paradreamlb.com`) under Site settings → Domain management, and update the domain's
+   DNS to point at Netlify (Netlify's UI gives you the exact records to add). Netlify
+   issues a free HTTPS certificate automatically.
+4. Cancel/downgrade the Strikingly plan once DNS has fully cut over and the new site is
+   confirmed working.
 
-1. Turn the raw mirror into clean, de-duplicated static HTML/CSS/JS (Strikingly
-   markup tends to be heavy — this gets trimmed to something maintainable).
-2. Re-host images/fonts locally instead of pointing at Strikingly's CDN.
-3. Add a `netlify.toml` (or `vercel.json`) for one-click deploys.
-4. Wire up the custom domain (`paradreamlb.com`) to point at Netlify/Vercel
-   instead of Strikingly once the new site is verified working.
+Vercel, Cloudflare Pages, and GitHub Pages all work the same way for a static site like
+this — just without the `netlify.toml` redirects/forms (those are Netlify-specific;
+GitHub Pages needs a plain `_redirects`-free setup and a third-party form service).
+
+## Site structure
+
+- `/`, `/why-paradream.html`, `/our-services.html`, `/gallery.html`, `/contact-us.html`,
+  `/join-us.html`, `/cookie-policy.html`
+- `/events/*.html` — one booking-request page per occasion (proposal, engagement,
+  bachelor, your-big-day, holy-first-communion, baptism, gender-reveal, birthday,
+  christmas), each with the real field set from the original site's forms.
+- `/portfolio/*.html` — photo galleries per service category (oriental zaffah, circus
+  show, inflatable games, table decoration, catering, characters & mascots, photo booth,
+  christmas mascots).
